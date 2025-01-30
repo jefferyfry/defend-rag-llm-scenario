@@ -1,0 +1,78 @@
+variable "prefix" {
+  description = "Prefix for resource names" 
+  type        = string
+}
+
+variable "suffix" {
+  description = "Suffix for resource names" 
+  type        = string
+}
+
+variable "owner" {
+  description = "Owner of resource" 
+  type        = string
+}
+
+variable "environment" {
+  description = "Environement where resources are deployed" 
+  type        = string
+}
+
+variable "ttl" {
+  description = "TTL of the Game platform" 
+  type        = string
+  default     = "24h"
+}
+
+variable "vpc_id" {
+  description = "ID of the VPC"
+  type        = string
+  default     = ""
+}
+
+variable "vpc_public_subnets" {
+  description = "List of IDs of public subnets"
+  type        = list
+  default     = []
+}
+
+variable "vpc_private_subnets" {
+  description = "List of IDs of private subnets"
+  type        = list
+  default     = []
+}
+variable "tags" {
+  description = "Tags for resources"
+  type        = map
+  default     = {}
+}
+
+variable "aws_key_pair_public_key" {
+  description = "Public key of SSH key pair"
+  type        = string
+  default     = ""
+}
+
+variable "instance_type" {
+  description = "Define the instance type"
+  type        = string
+  default     = "t2.medium"
+}
+
+variable "iam_instance_profile" {
+  description = "Define the instance profiletype"
+  type        = string
+  default     = "vectordbserver_role"
+}
+
+variable "client_id" {
+  description = "Wiz Client ID for Sensor"
+  type        = string
+  sensitive   = true
+}
+
+variable "client_secret" {
+  description = "Wiz Client Secret for Sensor"
+  type        = string
+  sensitive   = true
+}

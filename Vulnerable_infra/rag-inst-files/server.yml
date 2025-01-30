@@ -1,0 +1,26 @@
+
+
+write_files: 
+  - path: /home/ubuntu/app/app.py
+    owner: ubuntu:ubuntu
+    permissions: "0644"
+    encoding: base64
+    content: ${content-app}
+    defer: true
+  - path: /home/ubuntu/app/requirements.txt
+    owner: ubuntu:ubuntu
+    permissions: "0644"
+    encoding: base64
+    content: ${content-req}
+    defer: true
+packages:
+  - python3
+  - python3-pip
+  - jq
+runcmd:
+  - export WIZ_API_CLIENT_ID=${client_id} 
+  - export WIZ_API_CLIENT_SECRET=${client_secret} 
+  - curl -L https://downloads.wiz.io/sensor/sensor_install.sh | bash
+  - pip3 install -r requirements.txt
+  - setsid python3 /home/ubuntu/app/app.py
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
