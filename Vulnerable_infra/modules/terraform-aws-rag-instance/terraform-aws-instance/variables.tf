@@ -119,3 +119,13 @@ variable "client_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "vectordb_ip" {
+  description = "IP of vector db server"
+  type        = string
+}
+
+variable "bucket_name" {
+  description = "Name of the S3 bucket"
+  type        = string
+}

@@ -57,6 +57,18 @@ resource "aws_iam_role_policy" "ragserver_role_policy" {
         "Effect" : "Allow",
         "Action" : "sts:AssumeRole",
         "Resource" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
+      },
+      {
+        "Sid": "AccessBucket",
+        "Effect": "Allow",
+        "Action": ["s3:*"],
+        "Resource": [module.sensitive_bucket.bucket_arn]
+      },
+      {
+        "Sid": "AccessBucketObjects",
+        "Effect": "Allow",
+        "Action": ["s3:*"],
+        "Resource": ["${module.sensitive_bucket.bucket_arn}/*"]
       }
     ]
     }

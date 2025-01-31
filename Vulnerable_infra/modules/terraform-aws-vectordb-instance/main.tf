@@ -51,29 +51,12 @@ module "aws_sg_vectordbserver" {
     },
     {
       "type"        = "ingress"
-      "from_port"   = "5000"
-      "to_port"     = "5000"
+      "from_port"   = "0"
+      "to_port"     = "8000"
       "protocol"    = "tcp"
-      "description" = "Web Access to Web Server"
+      "description" = "Web Access to Chroma Vector DB"
       "cidr_blocks" = "0.0.0.0/0"
-    },
-    {
-      "type"        = "ingress"
-      "from_port"   = "4444"
-      "to_port"     = "4444"
-      "protocol"    = "tcp"
-      "description" = "Web Access to Web Server"
-      "cidr_blocks" = "0.0.0.0/0"
-    },
-    {
-      "type"        = "ingress"
-      "from_port"   = "80"
-      "to_port"     = "80"
-      "protocol"    = "tcp"
-      "description" = "Web Access to Web Server"
-      "cidr_blocks" = "0.0.0.0/0"
-    },
-
+    }
   ]
     tags =    local.tags
 }

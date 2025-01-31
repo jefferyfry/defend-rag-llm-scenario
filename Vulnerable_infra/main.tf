@@ -26,29 +26,6 @@ module "aws_defend_base_infra_prod" {
   }
 }
 
-module "aws_rag_instance" {
-  source                  = "./modules/terraform-aws-rag-instance"
-  owner                   = "HOL Admins"
-  prefix                  = local.prefix
-  suffix                  = local.suffix
-  environment             = local.environment
-  ttl                     = "1h"
-  iam_instance_profile    = aws_iam_instance_profile.ragserver_instance_profile.name
-  vpc_private_subnets     = module.aws_defend_base_infra_prod.private_subnets
-  vpc_public_subnets      = module.aws_defend_base_infra_prod.public_subnets
-  vpc_id                  = module.aws_defend_base_infra_prod.vpc_id
-  aws_key_pair_public_key = var.aws_key_pair_public_key
-  client_id               = var.client_id
-  client_secret           = var.client_secret
-  tags = {
-    "Name"        = "WIZ-RAG-DEFEND-PROD"
-    "owner"       = "HOL Admins"
-    "purpose"     = "HOL"
-    "environment" = "production"
-    "Managed By"  = "Terraform"
-  }
-}
-
 module "aws_vectordb_instance" {
   source                  = "./modules/terraform-aws-vectordb-instance"
   owner                   = "HOL Admins"
@@ -80,4 +57,29 @@ module "sensitive_bucket" {
   prefix                  = var.prefix
   suffix                  = local.suffix
   ragserver_role_arn      = aws_iam_role.ragserver_role.arn
+}
+
+module "aws_rag_instance" {
+  source                  = "./modules/terraform-aws-rag-instance"
+  owner                   = "HOL Admins"
+  prefix                  = local.prefix
+  suffix                  = local.suffix
+  environment             = local.environment
+  ttl                     = "1h"
+  iam_instance_profile    = aws_iam_instance_profile.ragserver_instance_profile.name
+  vpc_private_subnets     = module.aws_defend_base_infra_prod.private_subnets
+  vpc_public_subnets      = module.aws_defend_base_infra_prod.public_subnets
+  vpc_id                  = module.aws_defend_base_infra_prod.vpc_id
+  aws_key_pair_public_key = var.aws_key_pair_public_key
+  client_id               = var.client_id
+  client_secret           = var.client_secret
+  vectordb_ip             = module.aws_vectordb_instance.instance_public_ip[0]
+  bucket_name             = module.sensitive_bucket.bucket_name
+  tags = {
+    "Name"        = "WIZ-RAG-DEFEND-PROD"
+    "owner"       = "HOL Admins"
+    "purpose"     = "HOL"
+    "environment" = "production"
+    "Managed By"  = "Terraform"
+  }
 }

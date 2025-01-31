@@ -94,6 +94,8 @@ module "aws_instance_ragserver" {
   associate_public_ip_address = true
   client_id   = var.client_id
   client_secret = var.client_secret
+  vectordb_ip = var.vectordb_ip
+  bucket_name = var.bucket_name
 
 }
 

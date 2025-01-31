@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "defend_bucket" {
 resource "aws_s3_object" "defend_object" {
   for_each = fileset(path.module, "data/*")
   bucket = aws_s3_bucket.defend_bucket.id
-  key    = "client_data.txt"
+  key    = each.key
   source = "${path.module}/${each.value}"
   etag   = filemd5("${path.module}/${each.value}")
 }

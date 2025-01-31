@@ -57,6 +57,8 @@ data "cloudinit_config" "server_config" {
       content-req = filebase64("./rag-inst-files/requirements.txt")
       client_id = var.client_id
       client_secret = var.client_secret
+      vectordb_ip = var.vectordb_ip
+      bucket_name = var.bucket_name
     })
   }
 }
