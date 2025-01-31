@@ -1,24 +1,25 @@
 # Defend RAG LLM Scenario
 
 ## Overview
-
-![RAG LLM Scenario]()
-
-This repository contains the Terraform code to deploy a RAG LLM scenario to demonstrate the threat detection capabilities of the Wiz platform.
+This repository contains the Terraform code to deploy a RAG LLM scenario that demonstrates the security capabilities of the Wiz platform.
 The scenario deploys a vulnerable RAG LLM Application that is a cybersecurity chat app. Users can send cybersecurity questions to the app and get answers.
 
 ## How the RAG LLM App Works
-The RAG LLM app initially processes several cybersecurity documents in an S3 bucket by chunking and then storing the chunks into a Chroma vector database using HuggingFace embedding model.
-Then users can send a post request to a Flask API server to get answers to their questions.
 
-'''
+![RAG LLM Scenario](https://raw.githubusercontent.com/jefferyfry/defend-rag-llm-scenario/refs/heads/main/images/rag-llm-app.png)
+
+On initial deployment, the RAG LLM app processes several cybersecurity documents in an S3 bucket by chunking and then storing the chunks into a Chroma vector database using HuggingFace embedding model.
+Then users can send a post request to a RAG LLM app to get answers to their questions.
+
+For example, a user can send a POST request to the app with the following JSON payload:
+```
 curl -i -XPOST "http://<server>:8080/api/question" \
---header "Content-Type: application/json" \
---data '{
-"question": "What is cloud security?",
-"user_id": "me"
-}'
-'''
+    --header "Content-Type: application/json" \
+    --data '{
+        "question": "What is cloud security?",
+        "user_id": "me"
+    }'
+```
 
 When this request is received the questions are vectorized by the app and the closest results are extracted from the Chroma vector database. 
 Llama3.2 via Ollama is used as the language model to generate the answers from the results. This is all managed by the LlamaIndex framework.
