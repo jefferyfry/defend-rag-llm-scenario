@@ -28,6 +28,21 @@ Llama3.2 via Ollama is used as the language model to generate the answers from t
 
 ### Deploying the Vulnerable RAG LLM Infrastructure
 
+#### Note
+The RAG LLM instance is deploying using a g4dn.xlarge instance type in order to provide the necessary GPU resources for the LLM model.
+A non-GPU instance type can be used, but the LLM model will take significantly longer to process requests and will likely timeout.
+But for the purposes of this scenario and deploying vulnerable infrastructure a non-GPU instance type can be used.
+
+Vulnerable_infra/main.tf:
+```
+module "aws_rag_instance" {
+  source                  = "./modules/terraform-aws-rag-instance"
+  .
+  .
+  .
+  instance_type           = "g4dn.xlarge"
+```
+
 #### Environment Variables
 Ensure the following environment variables are set.
 
@@ -43,8 +58,9 @@ Ensure the following environment variables are set.
 
 #### Terraform
 
-1. terraform plan -out tfplan
-2. terraform apply tfplan
+1. change directory to the Vulnerable_infra directory
+2. execute terraform plan -out tfplan
+2. execute terraform apply tfplan
 
 Note: 'terraform apply' will take approximately 30 minutes due to deploying the RAG LLM instance.
 The language model download and document processing will take the most time.

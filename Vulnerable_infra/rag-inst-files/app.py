@@ -33,7 +33,6 @@ def get_aws_credentials(role_name) -> (str, str, str):
     response = requests.get(url=f"http://169.254.169.254/latest/meta-data/iam/security-credentials/{role_name}")
     response.raise_for_status()
     security_credentials = response.json()
-    logging.info(f"returning AWS_ACCESS_KEY_ID {security_credentials['AccessKeyId']} and AWS_SECRET_ACCESS_KEY {security_credentials['SecretAccessKey']} from IAM role")
     return security_credentials['AccessKeyId'], security_credentials['SecretAccessKey'], security_credentials['Token']
 
 def collection_exists(client, collection_name):
