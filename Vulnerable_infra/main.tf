@@ -4,6 +4,16 @@ resource "random_string" "unique_id" {
   upper   = false
   special = false
 }
+
+module "sensitive_bucket" {
+  source = "./modules/terraform-aws-s3-data"
+
+  environment             = "prod"
+  prefix                  = var.prefix
+  suffix                  = local.suffix
+  ragserver_role_arn      = aws_iam_role.ragserver_role.arn
+}
+
 module "aws_defend_base_infra_prod" {
   source                  = "./modules/terraform-aws-base-infra"
   vpc_name                = "wiz-rag-defend-prod"
@@ -50,15 +60,6 @@ module "aws_vectordb_instance" {
   }
 }
 
-module "sensitive_bucket" {
-  source = "./modules/terraform-aws-s3-data"
-
-  environment             = "prod"
-  prefix                  = var.prefix
-  suffix                  = local.suffix
-  ragserver_role_arn      = aws_iam_role.ragserver_role.arn
-}
-
 module "aws_rag_instance" {
   source                  = "./modules/terraform-aws-rag-instance"
   owner                   = "HOL Admins"
@@ -67,14 +68,17 @@ module "aws_rag_instance" {
   environment             = local.environment
   ttl                     = "1h"
   iam_instance_profile    = aws_iam_instance_profile.ragserver_instance_profile.name
+  instance_type           = "g4dn.xlarge"
   vpc_private_subnets     = module.aws_defend_base_infra_prod.private_subnets
   vpc_public_subnets      = module.aws_defend_base_infra_prod.public_subnets
   vpc_id                  = module.aws_defend_base_infra_prod.vpc_id
   aws_key_pair_public_key = var.aws_key_pair_public_key
   client_id               = var.client_id
   client_secret           = var.client_secret
-  vectordb_ip             = module.aws_vectordb_instance.instance_public_ip[0]
+  vectordb_ip             = module.aws_vectordb_instance.instance_private_ip[0]
   bucket_name             = module.sensitive_bucket.bucket_name
+  region                  = var.region
+  role_name               = aws_iam_role.ragserver_role.name
   tags = {
     "Name"        = "WIZ-RAG-DEFEND-PROD"
     "owner"       = "HOL Admins"

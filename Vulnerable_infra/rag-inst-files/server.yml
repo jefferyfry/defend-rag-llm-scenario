@@ -18,25 +18,27 @@ packages:
   - python3-pip
   - jq
 runcmd:
-  - export WIZ_API_CLIENT_ID=${client_id} 
+  - echo '>>> Installing sensor'
+  - export WIZ_API_CLIENT_ID=${client_id}
   - export WIZ_API_CLIENT_SECRET=${client_secret}
   - curl -L https://downloads.wiz.io/sensor/sensor_install.sh | sudo -E bash
+  - echo '>>> Installing Ollama'
+  - export HOME=/home/ubuntu
+  - curl -fsSL https://ollama.ai/install.sh | sudo -E bash
+  - echo '>>> Starting Ollama'
+  - sudo systemctl enable ollama
+  - sudo systemctl start ollama
+  - systemctl status ollama --no-pager
+  - echo '>>> Setting up python environment'
   - cd /home/ubuntu/app
+  - sudo apt install -y python3.10-venv
   - python3 -m venv venv
-  - source venv/bin/activate
-  - sudo apt remove python3-pip
-  - wget https://bootstrap.pypa.io/get-pip.py
-  - sudo python3 get-pip.py
-  - pip3 install pyopenssl --upgrade
-  - pip3 install chromadb
-  - pip3 install flask
-  - pip3 install blinker
-  - pip3 install flask_cors
-  - pip3 install llama_index
-  - pip3 install llama_index.embeddings.huggingface
-  - pip3 install llama_index.llms.ollama
-  - pip3 install llama_index.vector_stores_chroma
-  - pip3 install s3fs
+  - . venv/bin/activate
   - pip3 install -r requirements.txt
-  - echo 'Starting the app with the following parameters ${vectordb_ip} ${bucket_name}'
-  - setsid python3 app.py ${vectordb_ip} ${bucket_name}
+  - sleep 2m
+  - echo '>>> Pulling and starting language model'
+  - ollama pull llama3.2
+  - sleep 2m
+  - setsid ollama run llama3.2
+  - echo '>>> Starting the app with the following parameters ${vectordb_ip} ${bucket_name} ${role_name} ${region} '
+  - setsid python3 app.py ${vectordb_ip} ${bucket_name} ${role_name} ${region}

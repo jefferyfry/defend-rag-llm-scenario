@@ -86,3 +86,13 @@ variable "bucket_name" {
   description = "Name of the S3 bucket"
   type        = string
 }
+
+variable "region" {
+  description = "Name of AWS region"
+  type        = string
+}
+
+variable "role_name" {
+  description = "Name of the rag server EC2 role"
+  type        = string
+}

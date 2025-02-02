@@ -51,29 +51,12 @@ module "aws_sg_ragserver" {
     },
     {
       "type"        = "ingress"
-      "from_port"   = "5000"
-      "to_port"     = "5000"
+      "from_port"   = "0"
+      "to_port"     = "8080"
       "protocol"    = "tcp"
-      "description" = "Web Access to Web Server"
+      "description" = "Web Access to Rag Server"
       "cidr_blocks" = "0.0.0.0/0"
-    },
-    {
-      "type"        = "ingress"
-      "from_port"   = "4444"
-      "to_port"     = "4444"
-      "protocol"    = "tcp"
-      "description" = "Web Access to Web Server"
-      "cidr_blocks" = "0.0.0.0/0"
-    },
-    {
-      "type"        = "ingress"
-      "from_port"   = "80"
-      "to_port"     = "80"
-      "protocol"    = "tcp"
-      "description" = "Web Access to Web Server"
-      "cidr_blocks" = "0.0.0.0/0"
-    },
-
+    }
   ]
     tags =    local.tags
 }
@@ -96,6 +79,8 @@ module "aws_instance_ragserver" {
   client_secret = var.client_secret
   vectordb_ip = var.vectordb_ip
   bucket_name = var.bucket_name
+  region = var.region
+  role_name = var.role_name
 
 }
 
