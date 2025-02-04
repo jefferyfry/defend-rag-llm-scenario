@@ -33,13 +33,13 @@ output "nat_gw_public_ips" {
   value       = module.aws_vpc.nat_gw_public_ips
 }
 
-output "cloudtrail_bucket_arn" {
+/*output "cloudtrail_bucket_arn" {
   value = module.aws_cloudtrails.cloudtrail_bucket_arn
 }
 
 output "cloudtrail_bucket_name" {
   value = module.aws_cloudtrails.cloudtrail_bucket_name
-}
+}*/
 
 # output "dns_zone_id" {
 #   description = "DNS Zone IDs"

@@ -11,7 +11,7 @@ module "aws_vpc" {
   tags = var.x_tags
 }
 
-module "aws_cloudtrails" {
+/*module "aws_cloudtrails" {
   source                        = "./terraform-aws-cloudtrails"
   cloudtrail_name               = var.cloudtrail_name
   enable_logging                = var.enable_logging
@@ -21,6 +21,6 @@ module "aws_cloudtrails" {
   s3_bucket_name                = var.s3_bucket_name
   s3_bucket_force_destroy       = var.s3_bucket_force_destroy
   tags = var.x_tags
-}
+}*/
 
 

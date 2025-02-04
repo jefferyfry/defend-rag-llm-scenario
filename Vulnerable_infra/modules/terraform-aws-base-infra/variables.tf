@@ -51,7 +51,7 @@ variable "tags" {
   default = {}
 }
 
-variable "cloudtrail_name" {
+/*variable "cloudtrail_name" {
   description = "Name of the CloudTrail"
   type        = string
   default     = "wiz-ctf-cloudtrail"
@@ -74,6 +74,7 @@ variable "enable_logging" {
   type        = bool
   default     = true
 }
+ */
 
 variable "multi_region" {
   description = "Enable multi-region trail"

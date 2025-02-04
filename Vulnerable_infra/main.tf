@@ -24,8 +24,8 @@ module "aws_defend_base_infra_prod" {
   vpc_cidr                = "10.0.0.0/16"
   vpc_public_subnet_cidr  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   vpc_private_subnet_cidr = ["10.0.10.0/24", "10.0.11.0/24", "10.0.12.0/24"]
-  cloudtrail_name         = local.cloudtrail_name
-  s3_bucket_name          = local.s3_bucket_name
+  //cloudtrail_name         = local.cloudtrail_name
+  //s3_bucket_name          = local.s3_bucket_name
 
   x_tags = {
     "Name"        = "WIZ-RAG-DEFEND-PROD"
@@ -68,7 +68,7 @@ module "aws_rag_instance" {
   environment             = local.environment
   ttl                     = "1h"
   iam_instance_profile    = aws_iam_instance_profile.ragserver_instance_profile.name
-  instance_type           = "g4dn.xlarge"
+  instance_type           = "t2.large"
   vpc_private_subnets     = module.aws_defend_base_infra_prod.private_subnets
   vpc_public_subnets      = module.aws_defend_base_infra_prod.public_subnets
   vpc_id                  = module.aws_defend_base_infra_prod.vpc_id
