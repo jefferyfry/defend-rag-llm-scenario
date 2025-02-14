@@ -4,8 +4,8 @@ packages:
   - python3-pip
   - jq
 runcmd:
-  - export WIZ_API_CLIENT_ID=${client_id} 
-  - export WIZ_API_CLIENT_SECRET=${client_secret} 
+  - export WIZ_API_CLIENT_ID=${client_id}
+  - export WIZ_API_CLIENT_SECRET=${client_secret}
   - curl -L https://downloads.wiz.io/sensor/sensor_install.sh | sudo -E bash
   - pip3 install chromadb
   - setsid chroma run --host 0.0.0.0 --port 8000 --path ./my_chroma_data

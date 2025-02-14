@@ -33,13 +33,10 @@ an exploit due to a leaked private key. So this key should be a throwaway key th
 
 To generate a new SSH key pair, use the following command:
 ```
-    ssh-keygen -t rsa -b 2048 -f ~/.ssh/throwaway_aws_ec2_key
+    ssh-keygen -t rsa -b 2048 -N '' -f ~/.ssh/test_key
 ```
 
-Then set the following environment variable to the public key:
-```
-    export TF_VAR_aws_key_pair_public_key=$(cat ~/.ssh/throwaway_aws_ec2_key.pub)
-```
+Do not change the path ~/.ssh/test_key for the private key or the path ~/.ssh/test_key.pub for the public key. These keys will be uploaded for the vulnerable and attack infrastructure deployments.
     
 
 ### Deploying the Vulnerable RAG LLM Infrastructure
@@ -71,7 +68,6 @@ Ensure the following environment variables are set.
 | AWS_ACCESS_KEY_ID              | Your AWS credentials for terraform deployment only. eg. AKIAQEFWAZ...                    |
 | AWS_SECRET_ACCESS_KEY          | Your AWS credentials for terraform deployment only. eg. vjrQ/g/...                       |
 | AWS_DEFAULT_REGION             | Your AWS region for terraform deployment only. eg. us-east-2                             |
-| TF_VAR_aws_key_pair_public_key | The SSH public key to install on servers. eg. ssh-rsa AAAAB3NzaC1yc2...                  |
 | TF_VAR_client_id               | The Wiz sensor client ID to be used for sensor install on servers. eg. t3zxg...          |
 | TF_VAR_client_secret           | The Wiz sensor client secret to be used for sensor install on servers. eg. Jdy1YH...     |
 | TF_VAR_vpc_azs                 | The VPC availability zones to configure. eg.  ["us-east-2a", "us-east-2b", "us-east-2c"] |
@@ -88,21 +84,20 @@ The language model download and document processing will take the most time.
 ### Deploying the Attack Infrastructure
 
 The attack infrastructure is a simple Azure VM instance that will be used to simulate an attacker that has gained access to the throwaway private SSH key (discussed above) and is used to SSH into the RAG LLM instance.
-From here, the attacker further extracts the AWS credentials from the RAG LLM instance, creates a backdoor user on the instance and runs some additional recon tools. 
+From here, the attacker further extracts the AWS credentials from the RAG LLM instance, creates a backdoor user on the instance and runs some additional recon tools. For the best results, allow the Vulnerable RAG LLM infrastructure to be fully deployed for 24 hours before deploying the Attack infrastructure.
 
 #### Environment Variables
 Ensure the following environment variables are set.
 
-| Environment Variable            | Description                                                                          |
-|---------------------------------|--------------------------------------------------------------------------------------|
-| ARM_SUBSCRIPTION_ID             | Your Azure subscription ID. eg. AKIAQEFWAZ...                                        |
-| ARM_TENANT_ID                   | Your Azure tenant ID. eg. vjrQ/g/...                                                 |
-| ARM_CLIENT_ID                   | Your Azure Client ID. eg. wewqeq                                                     |
-| ARM_CLIENT_SECRET               | Your Azure Client Secret. eg. xxxx                                                   |
-| TF_VAR_aws_key_pair_private_key | The  compromised, throwaway SSH private key. eg. ssh-rsa AAAAB3NzaC1yc2...           |
-| TF_VAR_client_id                | The Wiz sensor client ID to be used for sensor install on servers. eg. t3zxg...      |
-| TF_VAR_client_secret            | The Wiz sensor client secret to be used for sensor install on servers. eg. Jdy1YH... |
-| TF_VAR_location                 | The Azure location to deploy the Azure VM. eg.                                       |
+| Environment Variable | Description                                                                                      |
+|----------------------|--------------------------------------------------------------------------------------------------|
+| ARM_SUBSCRIPTION_ID  | Your Azure subscription ID. eg. a234455...                                                       |
+| ARM_TENANT_ID        | Your Azure tenant ID. eg. f110f...                                                               |
+| ARM_CLIENT_ID        | Your Azure Client ID/Service Principal App ID. eg. b909090                                       |
+| ARM_CLIENT_SECRET    | Your Azure Client Secret/Service Principal Password. eg. 98789aX                                 |
+| TF_VAR_client_id     | The Wiz sensor client ID to be used for sensor install on servers. eg. t3zxg...                  |
+| TF_VAR_client_secret | The Wiz sensor client secret to be used for sensor install on servers. eg. Jdy1YH...             |
+| TF_VAR_target_host   | This should be the public IP of the RAG LLM Instance. This is the SSH access. e.g. 18.223.195.87 |
 
 #### Terraform
 

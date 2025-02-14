@@ -33,6 +33,11 @@ resource "aws_iam_role" "vectordbserver_role" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "ragserver_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role       = aws_iam_role.ragserver_role.name
+}
+
 resource "aws_iam_role_policy" "ragserver_role_policy" {
   name = "ragserver_policy"
   role = aws_iam_role.ragserver_role.id
@@ -63,12 +68,14 @@ resource "aws_iam_role_policy" "ragserver_role_policy" {
         "Effect": "Allow",
         "Action": ["s3:*"],
         "Resource": [module.sensitive_bucket.bucket_arn]
+        #"Resource": ["*"]
       },
       {
         "Sid": "AccessBucketObjects",
         "Effect": "Allow",
         "Action": ["s3:*"],
         "Resource": ["${module.sensitive_bucket.bucket_arn}/*"]
+        #"Resource": ["*"]
       }
     ]
     }

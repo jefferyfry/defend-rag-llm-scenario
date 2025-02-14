@@ -47,12 +47,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "aws_key_pair_public_key" {
-  description = "Public key of SSH key pair"
-  type        = string
-  default     = ""
-}
-
 variable "instance_type" {
   description = "Define the instance type"
   type        = string
@@ -75,4 +69,10 @@ variable "client_secret" {
   description = "Wiz Client Secret for Sensor"
   type        = string
   sensitive   = true
+}
+
+variable "key_name" {
+  description = "The name of the key pair"
+  type        = string
+  default     = ""
 }

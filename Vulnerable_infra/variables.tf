@@ -35,10 +35,6 @@ variable "client_secret" {
   type    = string
 }
 
-variable "aws_key_pair_public_key" {
-  type    = string
-}
-
 variable vpc_azs {
   type    = list(string)
 }

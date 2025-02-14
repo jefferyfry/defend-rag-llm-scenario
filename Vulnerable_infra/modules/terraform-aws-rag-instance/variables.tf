@@ -47,12 +47,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "aws_key_pair_public_key" {
-  description = "Public key of SSH key pair"
-  type        = string
-  default     = ""
-}
-
 variable "instance_type" {
   description = "Define the instance type"
   type        = string
@@ -95,4 +89,10 @@ variable "region" {
 variable "role_name" {
   description = "Name of the rag server EC2 role"
   type        = string
+}
+
+variable "key_name" {
+  description = "The name of the key pair"
+  type        = string
+  default     = ""
 }

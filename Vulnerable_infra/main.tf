@@ -36,6 +36,11 @@ module "aws_defend_base_infra_prod" {
   }
 }
 
+resource "aws_key_pair" "key_pair" {
+  key_name   = "defend-rag-llm-key"
+  public_key = file("~/.ssh/test_key.pub")
+}
+
 module "aws_vectordb_instance" {
   source                  = "./modules/terraform-aws-vectordb-instance"
   owner                   = "HOL Admins"
@@ -47,7 +52,7 @@ module "aws_vectordb_instance" {
   vpc_private_subnets     = module.aws_defend_base_infra_prod.private_subnets
   vpc_public_subnets      = module.aws_defend_base_infra_prod.public_subnets
   vpc_id                  = module.aws_defend_base_infra_prod.vpc_id
-  aws_key_pair_public_key = var.aws_key_pair_public_key
+  key_name = aws_key_pair.key_pair.key_name
   client_id               = var.client_id
   client_secret           = var.client_secret
 
@@ -72,7 +77,7 @@ module "aws_rag_instance" {
   vpc_private_subnets     = module.aws_defend_base_infra_prod.private_subnets
   vpc_public_subnets      = module.aws_defend_base_infra_prod.public_subnets
   vpc_id                  = module.aws_defend_base_infra_prod.vpc_id
-  aws_key_pair_public_key = var.aws_key_pair_public_key
+  key_name = aws_key_pair.key_pair.key_name
   client_id               = var.client_id
   client_secret           = var.client_secret
   vectordb_ip             = module.aws_vectordb_instance.instance_private_ip[0]

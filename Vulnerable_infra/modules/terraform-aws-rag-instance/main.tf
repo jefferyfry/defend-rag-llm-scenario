@@ -12,12 +12,6 @@ locals {
     }
 }
 
-module "aws_key_pair" {
-  source     = "./terraform-aws-keypair"
-  key_name   = local.key_name
-  public_key = var.aws_key_pair_public_key
-}
-
 module "aws_sg_ragserver" {
   source      = "./terraform-aws-securitygroup"
   name        = "ragserver"
@@ -73,7 +67,7 @@ module "aws_instance_ragserver" {
   instance_type               = var.instance_type
   iam_instance_profile        = var.iam_instance_profile
   subnet_id                   = var.vpc_public_subnets[0]
-  key_name                    = module.aws_key_pair.key_name
+  key_name                    = var.key_name
   associate_public_ip_address = true
   client_id   = var.client_id
   client_secret = var.client_secret
